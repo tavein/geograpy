@@ -2,7 +2,7 @@ import os
 import csv
 import pycountry
 import sqlite3
-from .utils import remove_non_ascii, fuzzy_match
+from utils import remove_non_ascii, fuzzy_match
 from collections import Counter
 
 """
