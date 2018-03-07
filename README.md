@@ -10,9 +10,10 @@ example distinguishing between a country, region or city.
 
 ## Install & Setup
 
-Grab the package using `pip` (this will take a few minutes)
 
-    pip install geograpy
+cd to downloaded directory
+python setup.py build
+python setup.py install
 
 Geograpy uses [NLTK](http://www.nltk.org/) for entity recognition, so you'll also need 
 to download the models we're using. Fortunately there's a command that'll take 
