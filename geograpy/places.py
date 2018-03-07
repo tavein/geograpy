@@ -61,7 +61,7 @@ class PlaceContext(object):
         try:
             pycountry.countries.get(name=s)
             return True
-        except KeyError, e:
+        except KeyError as e:
             return False
 
     
