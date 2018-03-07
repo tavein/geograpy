@@ -12,7 +12,9 @@ example distinguishing between a country, region or city.
 
 
 cd to downloaded directory
+
 python setup.py build
+
 python setup.py install
 
 Geograpy uses [NLTK](http://www.nltk.org/) for entity recognition, so you'll also need 
