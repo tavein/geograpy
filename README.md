@@ -1,4 +1,4 @@
-This fork fixes issues with newer versions of nltk.
+This fork fixes issues with newer versions of nltk and python 3+
 
 A rewrite that fixes more issues is available here, please use it instead: https://github.com/shubhamkumar0/geograpy
 
