@@ -1,6 +1,7 @@
+
 import nltk
 from newspaper import Article
-from utils import remove_non_ascii
+from .utils import remove_non_ascii
 
 
 class Extractor(object):
@@ -11,7 +12,7 @@ class Extractor(object):
         self.text = text
         self.url = url
         self.places = []
-    
+
     def set_text(self):
         if not self.text and self.url:
             a = Article(self.url)

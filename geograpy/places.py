@@ -1,12 +1,13 @@
+
 import os
 import csv
 import pycountry
 import sqlite3
-from utils import remove_non_ascii, fuzzy_match
+from .utils import remove_non_ascii, fuzzy_match
 from collections import Counter
 
 """
-Takes a list of place names and works place designation (country, region, etc) 
+Takes a list of place names and works place designation (country, region, etc)
 and relationships between places (city is inside region is inside country, etc)
 """
 class PlaceContext(object):
@@ -19,7 +20,7 @@ class PlaceContext(object):
 
     def populate_db(self):
         cur = self.conn.cursor()
-        cur.execute("DROP TABLE IF EXISTS cities")    
+        cur.execute("DROP TABLE IF EXISTS cities")
 
         cur.execute("CREATE TABLE cities(geoname_id INTEGER, continent_code TEXT, continent_name TEXT, country_iso_code TEXT, country_name TEXT, subdivision_iso_code TEXT, subdivision_name TEXT, city_name TEXT, metro_code TEXT, time_zone TEXT)")
         cur_dir = os.path.dirname(os.path.realpath(__file__))
@@ -55,8 +56,8 @@ class PlaceContext(object):
 
         return s
 
-    
-    def is_a_country(self, s): 
+
+    def is_a_country(self, s):
         s = self.correct_country_mispelling(s)
         try:
             pycountry.countries.get(name=s)
@@ -64,8 +65,8 @@ class PlaceContext(object):
         except KeyError as e:
             return False
 
-    
-    
+
+
     def places_by_name(self, place_name, column_name):
         if not self.db_has_data():
             self.populate_db()
@@ -87,7 +88,7 @@ class PlaceContext(object):
     def regions_for_name(self, region_name):
         return self.places_by_name(region_name, 'subdivision_name')
 
-    
+
     def get_region_names(self, country_name):
         country_name = self.correct_country_mispelling(country_name)
         try:
@@ -100,7 +101,7 @@ class PlaceContext(object):
 
 
     def set_countries(self):
-        countries = [self.correct_country_mispelling(place) 
+        countries = [self.correct_country_mispelling(place)
             for place in self.places if self.is_a_country(place)]
 
         self.country_mentions = Counter(countries).most_common()
@@ -111,12 +112,12 @@ class PlaceContext(object):
         regions = []
         self.country_regions = {}
         region_names = {}
-        
+
         if not self.countries:
             self.set_countries()
 
         def region_match(place_name, region_name):
-            return fuzzy_match(remove_non_ascii(place_name), 
+            return fuzzy_match(remove_non_ascii(place_name),
                 remove_non_ascii(region_name))
 
         def is_region(place_name, region_names):
@@ -153,7 +154,7 @@ class PlaceContext(object):
 
         for row in rows:
             country = None
-            
+
             try:
                 country = pycountry.countries.get(alpha2=row[3])
                 country_name = country.name
@@ -172,7 +173,7 @@ class PlaceContext(object):
 
             if country_name not in self.country_cities:
                 self.country_cities[country_name] = []
-            
+
             if city_name not in self.country_cities[country_name]:
                 self.country_cities[country_name].append(city_name)
 
